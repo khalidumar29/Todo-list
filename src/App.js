@@ -1,7 +1,14 @@
+import Footer from "./Components/Footer";
+import Navbar from "./Components/Navbar";
+import Home from "./Pages/Home";
+
 function App() {
   return (
     <div>
-      <h1 className='text-bold text-green-500'>hellow world</h1>
+      <Navbar>
+        <Home></Home>
+      </Navbar>
+      <Footer></Footer>
     </div>
   );
 }
