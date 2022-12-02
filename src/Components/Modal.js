@@ -1,9 +1,28 @@
 import React from "react";
+import { toast } from "react-hot-toast";
 
 const Modal = () => {
   const handleSubmitNewTodo = (e) => {
     e.preventDefault();
-    console.log("new todo submitted");
+    const todo = {
+      title: e.target.title.value,
+      description: e.target.description.value,
+      activity: "todo",
+    };
+
+    fetch("https://moont-tech-khalidumar29.vercel.app/todo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(todo),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          toast.success("Task Added Successfully");
+          document.getElementById("modalClose").click();
+          document.getElementById("form").reset();
+        }
+      });
   };
   return (
     <>
@@ -11,12 +30,13 @@ const Modal = () => {
       <div className='modal justify-center'>
         <div className='modal-box relative'>
           <label
+            id='modalClose'
             htmlFor='add_todo_modal'
             className='btn btn-sm btn-circle absolute right-2 top-2'
           >
             ✕
           </label>
-          <form onSubmit={handleSubmitNewTodo}>
+          <form id='form' onSubmit={handleSubmitNewTodo}>
             <h1 className='text-[32px] text-primary text-center my-2'>
               Add Todo
             </h1>
@@ -31,6 +51,7 @@ const Modal = () => {
               <input
                 name='title'
                 type='text'
+                required
                 placeholder='Type here'
                 className='input input-bordered w-full '
               />
@@ -44,6 +65,8 @@ const Modal = () => {
               </label>
               <br />
               <textarea
+                name='description'
+                required
                 className='textarea textarea-bordered w-full'
                 placeholder='Description...'
               ></textarea>
