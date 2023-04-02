@@ -7,6 +7,7 @@ const Modal = () => {
     const todo = {
       title: e.target.title.value,
       description: e.target.description.value,
+      due_date: e.target.due_date.value,
       activity: "todo",
     };
 
@@ -70,6 +71,21 @@ const Modal = () => {
                 className='textarea textarea-bordered w-full'
                 placeholder='Description...'
               ></textarea>
+            </div>
+            <div className='mt-3'>
+              <label
+                className='text-[18px] text-bold text-slate-900'
+                htmlFor='title'
+              >
+                Due Date:
+              </label>
+              <br />
+              <input
+                required
+                className='cursor-pointer'
+                type='date'
+                name='due_date'
+              />
             </div>
             <input
               value={"Add Todo"}

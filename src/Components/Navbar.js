@@ -12,11 +12,7 @@ const Navbar = ({ children }) => {
             todo List
           </a>
         </div>
-        <div className='flex-none mr-5'>
-          <label className='btn btn-outline' htmlFor='add_todo_modal'>
-            Add Todo
-          </label>
-        </div>
+        <div className='flex-none mr-5'></div>
       </div>
       {children}
       <Modal></Modal>
