@@ -99,7 +99,7 @@ const TodoDetailsModal = ({ id }) => {
                 </div>
                 <div className='flex items-center gap-4 mt-6 justify-end'>
                   <input
-                    defaultValue={"close"}
+                    value={"close"}
                     className='btn btn-error btn-outline'
                     onClick={() => setEditMode(!editMode)}
                   />
