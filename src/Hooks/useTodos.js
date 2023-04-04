@@ -4,7 +4,7 @@ import { useEffect } from "react";
 const useTodos = () => {
   const [todos, setTodos] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/todo")
+    fetch("https://moont-tech-khalidumar29.vercel.app/todo")
       .then((res) => res.json())
       .then((data) => setTodos(data));
   }, [todos]);

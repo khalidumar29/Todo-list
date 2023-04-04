@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import { Route, Routes } from "react-router-dom";
 import SignUp from "./Pages/SignUp";
 import LogIn from "./Pages/LogIn";
+import RequireAuth from "./Auth/RequireAuth";
 
 function App() {
   return (
@@ -14,9 +15,11 @@ function App() {
           <Route
             path='/'
             element={
-              <Navbar>
-                <Home></Home>
-              </Navbar>
+              <RequireAuth>
+                <Navbar>
+                  <Home></Home>
+                </Navbar>
+              </RequireAuth>
             }
           ></Route>
           <Route
@@ -35,6 +38,7 @@ function App() {
               </Navbar>
             }
           ></Route>
+          <Route path='*' component={() => "404 NOT FOUND"} />
         </Routes>
       </TodoProvider>
       <Toaster position='top-center' reverseOrder={false} />

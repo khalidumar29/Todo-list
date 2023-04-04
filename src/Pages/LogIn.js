@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import auth from "../firebase.init";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
@@ -7,29 +7,37 @@ const LogIn = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const navigate = useNavigate();
+  const [users, setUsers] = useState({});
 
   if (error) {
-    toast.error(error.message, { id: 1 });
+    if (error.message === "Firebase: Error (auth/wrong-password).") {
+      toast.error("email and password does't match", { id: 1 });
+    }
   }
-
-  const location = useLocation();
-  let from = location.state?.from?.pathname || "/";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    setUsers({ email, password });
     signInWithEmailAndPassword(email, password);
-
-    if (user) {
-      navigate(from, { replace: true });
-    }
-
-    if (user) {
-      navigate("/");
-      toast.success("successfully login");
-    }
   };
+  if (user) {
+    navigate("/");
+
+    fetch("https://moont-tech-khalidumar29.vercel.app/login", {
+      method: "POST",
+      body: JSON.stringify(users),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // store the JWT token in localStorage
+        localStorage.setItem("token", data.token);
+      })
+      .catch((error) => console.error(error));
+    toast.success("successfully login", { id: 1 });
+  }
   return (
     <div className='min-h-[85.9vh] flex items-center justify-center bg-gradient-to-r from-teal-300 to-gray-400'>
       <div className='max-w-md w-full p-6 bg-white rounded-md shadow-md'>
@@ -72,7 +80,7 @@ const LogIn = () => {
             type='submit'
             className='w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700'
           >
-            Log In
+            {loading ? "..." : "Log In"}
           </button>
           <p className='capitalize text-center mt-2 text-black-300 text-[14px]'>
             if you don't have any account create an{" "}

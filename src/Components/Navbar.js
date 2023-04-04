@@ -35,13 +35,13 @@ const Navbar = ({ children }) => {
           {user ? (
             <>
               <div className='avatar'>
-                <div tabindex='0' className='w-16 rounded-full cursor-pointer'>
+                <div tabIndex='0' className='w-16 rounded-full cursor-pointer'>
                   <img src='./avatar.jpg' alt='avatar' />
                 </div>
               </div>
               <ul
-                tabindex='0'
-                class='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'
+                tabIndex='0'
+                className='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'
               >
                 <li>
                   <Link
