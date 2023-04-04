@@ -2,10 +2,21 @@ import React from "react";
 import { FcTodoList } from "react-icons/fc";
 import Modal from "./Modal";
 import auth from "../firebase.init";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Link } from "react-router-dom";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 const Navbar = ({ children }) => {
   const [user] = useAuthState(auth);
+  const [signOut, loading, error] = useSignOut(auth);
+  const navigate = useNavigate();
+
+  if (loading) {
+    <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    toast.error(error.message);
+  }
 
   return (
     <div className='mx-[5%] mt-[25px]'>
@@ -33,7 +44,17 @@ const Navbar = ({ children }) => {
                 class='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'
               >
                 <li>
-                  <Link to={"#"}>Sing Out</Link>
+                  <Link
+                    onClick={async () => {
+                      const success = await signOut();
+                      if (success) {
+                        navigate("/sing-up");
+                      }
+                    }}
+                    to={"#"}
+                  >
+                    Sing Out
+                  </Link>
                 </li>
               </ul>
             </>

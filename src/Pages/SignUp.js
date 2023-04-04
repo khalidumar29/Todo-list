@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import auth from "../firebase.init";
 const SignUp = () => {
-  const [newUser, setNewUser] = useState({});
   const [passwordError, setPasswordError] = useState("");
-  console.log(newUser);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  const navigate = useNavigate();
+
+  if (loading) {
+    return <h1>Loading..</h1>;
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     const ConfirmPassword = e.target.ConfirmPassword.value;
     if (password === ConfirmPassword) {
-      setNewUser({ email, password });
+      createUserWithEmailAndPassword(email, password);
+      user && navigate("/");
     } else if (password !== ConfirmPassword) {
       setPasswordError("your password & confirm password dosen't match");
     }
@@ -68,7 +75,9 @@ const SignUp = () => {
               required
               className='w-full p-2 border border-gray-400 rounded-md'
             />
-            <p className='text-error'>{passwordError}</p>
+            <p className='text-error'>
+              {passwordError} {error && error.message}
+            </p>
           </div>
 
           <button

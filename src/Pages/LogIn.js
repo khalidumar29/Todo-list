@@ -1,12 +1,34 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import auth from "../firebase.init";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { toast } from "react-hot-toast";
 const LogIn = () => {
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  const navigate = useNavigate();
+
+  if (error) {
+    toast.error(error.message, { id: 1 });
+  }
+
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log(email, password);
+    signInWithEmailAndPassword(email, password);
+
+    if (user) {
+      navigate(from, { replace: true });
+    }
+
+    if (user) {
+      navigate("/");
+      toast.success("successfully login");
+    }
   };
   return (
     <div className='min-h-[85.9vh] flex items-center justify-center bg-gradient-to-r from-teal-300 to-gray-400'>
