@@ -7,7 +7,9 @@ const LogIn = () => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const navigate = useNavigate();
-  const [users, setUsers] = useState({});
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState(0);
 
   if (error) {
     if (error.message === "Firebase: Error (auth/wrong-password).") {
@@ -19,15 +21,12 @@ const LogIn = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    setUsers({ email, password });
     signInWithEmailAndPassword(email, password);
   };
   if (user) {
-    navigate("/");
-
     fetch("https://moont-tech-khalidumar29.vercel.app/login", {
       method: "POST",
-      body: JSON.stringify(users),
+      body: JSON.stringify({ email, password }),
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
@@ -37,6 +36,7 @@ const LogIn = () => {
       })
       .catch((error) => console.error(error));
     toast.success("successfully login", { id: 1 });
+    navigate("/");
   }
   return (
     <div className='min-h-[85.9vh] flex items-center justify-center bg-gradient-to-r from-teal-300 to-gray-400'>
@@ -54,6 +54,7 @@ const LogIn = () => {
               type='email'
               id='email'
               name='email'
+              onBlur={(e) => setEmail(e.target.value)}
               required
               placeholder='Enter Email'
               className='w-full p-2 border border-gray-400 rounded-md'
@@ -68,6 +69,7 @@ const LogIn = () => {
               Password
             </label>
             <input
+              onBlur={(e) => setPassword(e.target.value)}
               type='password'
               id='password'
               name='password'

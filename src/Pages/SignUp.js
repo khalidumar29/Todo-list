@@ -21,20 +21,22 @@ const SignUp = () => {
       if ((email, password)) {
         setUsers({ email, password });
       }
-      user && navigate("/");
     } else if (password !== ConfirmPassword) {
       setPasswordError("your password & confirm password dosen't match");
     }
   };
 
   if (user && users) {
-    fetch("https://moont-tech-khalidumar29.vercel.app/signup", {
+    fetch("https://moont-tech-khalidumar29.vercel.app/singup", {
       method: "POST",
       body: JSON.stringify(users),
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      })
       .catch((error) => console.error(error));
   }
 

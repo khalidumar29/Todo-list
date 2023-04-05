@@ -25,9 +25,12 @@ const TodoCart = ({ todo, setTodoId }) => {
   };
 
   const handleDeleteTask = () => {
+    const token = localStorage.getItem("token");
+
     fetch(`https://moont-tech-khalidumar29.vercel.app/todo/${todo._id}`, {
       method: "DELETE",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Access-Control-Allow-Origin": "*",
         mode: "no-cors",
         "Content-Type": "application/json",

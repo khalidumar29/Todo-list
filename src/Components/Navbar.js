@@ -49,6 +49,7 @@ const Navbar = ({ children }) => {
                       const success = await signOut();
                       if (success) {
                         navigate("/sing-up");
+                        localStorage.removeItem("token");
                       }
                     }}
                     to={"#"}
